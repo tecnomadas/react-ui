@@ -1,0 +1,21 @@
+name: Generate NPM Package
+on:
+  push:
+    branches:
+      - "develop"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm install
+      - uses: actions/setup-node@v2
+        with:
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@tecnomadas"
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
